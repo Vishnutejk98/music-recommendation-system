@@ -1,0 +1,10 @@
+tflite
+tornado>=6.1
+Flask==2.0.1
+matplotlib>=3.3.4
+numpy>=1.19.5
+tensorflow-cpu
+opencv-python==4.2.0.34
+gunicorn
+
+

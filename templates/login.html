@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/cspd-player.css">
+    <title>Music Recomendation System</title>
+</head>
+<style>
+    h3 {
+        font-family: sans-sarif;
+    }
+
+    .row {
+        min-height: 100vh;
+        align-items: center;
+    }
+</style>
+
+<div class="container" id="signup_page"
+    style="background-image: url(./assets/bg1.jpg);background-repeat:no-repeat;background-size:100%;max-width:100%">
+    <div class="row">
+        <div class="col-md-6 m-auto">
+
+            <!-- Registration-->
+            <div class="card shadow p-5 animated zoomIn slow">
+                <h3 class="text-center font-weight-bold text-uppercase mb-3">SIGN UP</h3>
+                <form action="/register" onsubmit="return checkpassword();" method="post">
+                    <div class="form-group">
+                        <label>Enter Username</label>
+                        <input type="text" class="form-control" name="rg_username" id="rg_username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Enter Email</label>
+                        <input type="email" class="form-control" name="rg_username" id="rg_email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Enter Password</label>
+                        <input type="password" class="form-control" name="rg_password" id="rg_password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" id="cnf_password" required>
+                    </div>
+                    <div class="form-group mt-2">
+                        <button type="submit" class="btn btn-outline-dark btn-block rounded-pill">Register</button>
+                        <button type="button" id="show_login"
+                            class="btn btn-outline-dark btn-block rounded-pill">Login</button>
+                    </div>
+                    <div class="form-group" id="password_notmatch" style="display: none;">
+                        <label>Password Doesn't Match</label>
+                    </div>
+                    {% if error %}
+                    <div class="mb-3" style="margin-top:10px">
+                        <div class="alert alert-danger" id = "wrongpass" role="alert">
+                            {{ error }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" id="login_page"
+    style="display:none;background-image: url(./assets/bg1.jpg);background-repeat:no-repeat;background-size:100%;max-width:100%">
+    <div class="row">
+        <div class="col-md-6 m-auto">
+
+            <!-- Registration-->
+            <div class="card shadow p-5 animated zoomIn slow">
+                <h3 class="text-center font-weight-bold text-uppercase mb-3">SIGN IN</h3>
+                <form action="/login" method="post">
+                    <div class="form-group">
+                        <label>Enter Username</label>
+                        <input type="text" name="lg_username" id="lg_username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Enter Password</label>
+                        <input type="password" name="lg_password" id="lg_password" class="form-control" required>
+                    </div>
+                    <div class="form-group mt-2">
+                        <button type="submit" class="btn btn-outline-dark btn-block rounded-pill">Login</button>
+                        <button type="button" id="show_register"
+                            class="btn btn-outline-dark btn-block rounded-pill">Register</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Optional JavaScript; choose one of the two! -->
+<script src="assets/cspd-player.js"></script>
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+<script>
+    jQuery(document).ready(function () {
+        jQuery("#show_login").click(function () {
+            jQuery("#login_page").show();
+            jQuery("#signup_page,#wrongpass").hide();
+        })
+        jQuery("#show_register").click(function () {
+            jQuery("#signup_page").show();
+            jQuery("#login_page,#wrongpass").hide();
+        })
+
+    })
+    function checkpassword() {
+        if (jQuery("#rg_password").val() && jQuery("#cnf_password").val()) {
+            if (jQuery("#rg_password").val() == jQuery("#cnf_password").val()) {
+                jQuery("#password_notmatch").hide();
+                return true;
+            }
+            else {
+                jQuery("#password_notmatch").show();
+                return false;
+            }
+        }
+    }
+</script>

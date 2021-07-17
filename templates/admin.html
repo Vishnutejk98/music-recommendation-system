@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/cspd-player.css">
+    <title>Music Recomendation System</title>
+</head>
+<style>
+    .modal {
+        background-color: white;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        border: none !important;
+    }
+
+    .wavy {
+        position: relative;
+        -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+        color: black;
+        font-size: small;
+    }
+
+    .wavy span {
+        position: relative;
+        display: inline-block;
+        font-size: 1em;
+        text-transform: uppercase;
+        animation: animate 1.5s ease-in-out infinite;
+        animation-delay: calc(.1s * var(--i))
+    }
+
+    @keyframes animate {
+
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
+
+        20% {
+            transform: translateY(-20px);
+        }
+
+        40% {
+            transform: translateY(0px);
+        }
+    }
+</style>
+
+<body style="margin-bottom: 90px;">
+
+
+    <nav class="navbar navbar-light bg-dark text-white p-2" style="position: fixeds;">
+        <span class="navbar-brand mb-0 h1 text-white text-center"><svg xmlns="http://www.w3.org/2000/svg" width="35"
+                height="35" fill="currentColor" class="bi bi-music-player" viewBox="0 0 16 16">
+                <path
+                    d="M4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3zm1 0v3h6V3H5zm3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                <path d="M11 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                <path
+                    d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z" />
+            </svg>
+        </span>
+        <p>
+        <h2>Music Recomendation System</h2>
+        </p>
+        <div class="scrol-demo">
+            <div class="logout" onclick=" window.location.href='{{ url_for('log') }}'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
+                    class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
+                    <path fill-rule="evenodd"
+                        d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                </svg>
+            </div>
+        </div>
+
+    </nav>
+
+    <div class="mt-5 p-3">
+        <div class="text-center">
+            <h3>Hello Admin, You can use this Page for the analysis <br></h3>
+            <button type="button" id="show_user_list" class="btn btn-info mt-2">User's Registered</button>
+            <button type="button" id="show_user_history" class="btn btn-info mt-2">User's App Usage</button>
+        </div>
+
+    </div>
+
+    <div class="container userlist">
+        <div class="text-center lead">
+            <h5>User Registered Details</h5>
+        </div>
+        <div class="user-view">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">User ID</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Email ID</th>
+                    </tr>
+                </thead>
+                <tbody id="user_tbl">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container userhistory" style="display: none;">
+        <div class="text-center lead">
+            <h5>User Usage Details</h5>
+        </div>
+        <div class="user-view">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">User ID</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Mood</th>
+                        <th scope="col">TimeStamp</th>
+                    </tr>
+                </thead>
+                <tbody id="userhistory_tbl">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <!-- Footer Music Player -->
+    <div class="fixed-bottom">
+
+        <div class="text-center bg-dark text-white p-3">
+            Copyright © 2021 Music Recommendation System. All Rights Reserved.
+        </div>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <script src="assets/cspd-player.js"></script>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+</body>
+<script>
+    jQuery(document).ready(function ($) {
+
+
+        $.ajax({
+            url: "/getuserdetails",
+            type: "get",
+            success: function (response) {
+                user_list = JSON.parse(JSON.stringify(response));
+                console.log(response);
+                id_user = 1;
+                $(user_list).each(function (key, value) {
+                    user_name = value.name;
+                    email = value.email;
+
+                    $("#user_tbl").append('<tr>\
+                        <th scope="row">'+ id_user + '</th>\
+                        <td>'+ user_name + '</td>\
+                        <td>'+ email + '</td>\
+                         </tr>');
+                    id_user++;
+                });
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+
+        $.ajax({
+            url: "/getuserhistory",
+            type: "get",
+            success: function (response) {
+                user_list = JSON.parse(JSON.stringify(response));
+                console.log(response);
+                id_user = 1;
+                $(user_list).each(function (key, value) {
+                    user_name = value.name;
+                    mood = value.mood;
+                    time = value.time;
+
+                    $("#userhistory_tbl").append('<tr>\
+                        <th scope="row">'+ id_user + '</th>\
+                        <td>'+ user_name + '</td>\
+                        <td>'+ mood + '</td>\
+                        <td>'+ time + '</td>\
+                         </tr>');
+                    id_user++;
+                });
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+
+        jQuery("#show_user_list").on("click", function () {
+            jQuery(".userlist").show();
+            jQuery(".userhistory").hide();
+        })
+
+        jQuery("#show_user_history").on("click", function () {
+            jQuery(".userlist").hide();
+            jQuery(".userhistory").show();
+        })
+
+
+    })
+</script>
+
+</html>

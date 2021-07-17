@@ -1,0 +1,2 @@
+login pages
+admin pages - password admin - admin@123
